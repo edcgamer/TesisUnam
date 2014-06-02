@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="TesisPu" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <non-jta-data-source/>
+    <class>com.marcosanta.data.model.Usuario</class>
+    <shared-cache-mode>ALL</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <class>com.marcosanta.data.model.Datos</class>
+    <class>com.marcosanta.data.model.Materia</class>
+    <class>com.marcosanta.data.model.Tema</class>
+    <class>com.marcosanta.data.model.ObjetoAprendizaje</class>
+    <class>com.marcosanta.data.model.Objetivo</class>
+    <class>com.marcosanta.data.model.Referencia</class>
+    <class>com.marcosanta.data.model.TipoObjetoAprendizaje</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.jdbc.batch_size" value="0"/>
+      <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+      <property name="hibernate.max_fetch_depth" value="4"/>
+    </properties>
+    <!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tesis"/>
+      <property name="javax.persistence.jdbc.password" value="toor"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>-->
+  </persistence-unit>
+</persistence>

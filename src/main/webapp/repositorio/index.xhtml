@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:rep="http://java.sun.com/jsf/composite/componentes/reproductor-media">
+    <f:view locale="#{appCredentials.idioma}">
+        <h:head>
+            <h:outputStylesheet library="css" name="default.css"  />
+            <f:loadBundle basename="ApplicationMessages" var="msj" />
+            <p:ajaxStatus onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" >
+            </p:ajaxStatus>
+            <p:dialog modal="true" widgetVar="statusDialog" resizable="false" header=""   
+                      draggable="false" closable="false">  
+                <h:graphicImage library="img"  name="unam.gif"/>
+            </p:dialog>
+        </h:head>
+        <body>
+            <h:form id="oa">
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <center>
+                    <p:dataTable id="tabla" value="#{repositorioController.objetosAprendizaje}" rendered="#{repositorioController.objetoAprendizaje eq null}" var="_oa" rows="5" style="width: 80%"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column headerText="Nombre" filterBy="#{_oa.nombre}" filterMatchMode="contains" >
+                            <h:outputText value="#{_oa.nombre}" />
+                        </p:column>
+                        <p:column headerText="Objetivos" >
+                            <ui:repeat value="#{_oa.objetivos}" var="_objetivo">
+                                nombre: <h:outputText value="#{_objetivo.nombre}" />  
+                                <br/>
+                                impacto: <h:outputText value="#{_objetivo.impacto}" />
+                                <br/>
+                            </ui:repeat>
+                        </p:column>
+                        <p:column headerText="referencias" >
+                            <ui:repeat value="#{_oa.referencias}" var="_referencias">
+                                <h:outputText value="#{_referencias.tipo}" />      |
+                                <h:outputText value="#{_referencias.titulo}" />
+                                <br/>
+
+                            </ui:repeat>
+                        </p:column>
+                        <p:column headerText="tipo objeto" >
+                            <p:outputLabel value="#{_oa.tipoObjetoAprendizaje.nombre}" />
+                        </p:column>
+                        <p:column headerText="Tema" >
+                            <h:outputText value="#{_oa.tema.tema}" />
+                        </p:column>
+                        <p:column headerText="Profesor" filterBy="#{_oa.usuario.username}" filterMatchMode="contains">
+                            <h:outputText value="#{_oa.usuario.username}" />
+                        </p:column>
+                        <p:column headerText="Visualizar">
+                            <p:commandButton value="visualizar" actionListener="#{repositorioController.visualizarObjetoAprendizaje(_oa)}" ajax="false"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:panel id="panel" rendered="#{repositorioController.objetoAprendizaje ne null}">
+                        <p:outputLabel value="#{repositorioController.objetoAprendizaje.nombre}" />
+                        <br/>
+                        <br/>
+                        <p:outputLabel value="Lista de Materias" />                        
+                        <br/>
+                        <ui:repeat value="#{repositorioController.objetoAprendizaje.listaMaterias}" var="_materia">
+                            <br/>
+                            <p:outputLabel value="#{_materia.materia}"/>
+                        </ui:repeat>
+                        <br/>
+                        <br/>
+                        <p:outputLabel value="Tema" />
+                        <br/>
+                        <br/>
+                        <p:outputLabel value="#{repositorioController.objetoAprendizaje.tema.tema}" />
+                        <br/>
+                        <br/>
+                        <p:outputLabel value="Objetivos" />
+                        <br/>
+                        <ui:repeat value="#{repositorioController.objetoAprendizaje.objetivos}" var="_objetivotmp">
+                            nombre: <h:outputText value="#{_objetivotmp.nombre}" />  
+                            <br/>
+                            impacto: <h:outputText value="#{_objetivotmp.impacto}" />
+                            <br/>
+                        </ui:repeat>
+                        <br/>
+                        <p:outputLabel value="Referencias" />
+                        <br/>
+                        <br/>
+                        <p:tabView id="tab">
+                            <p:tab title="Video">
+                                <p:accordionPanel style="width: 50%" value="#{repositorioController.referenciasVideo}"  var="_referenciasVideo" activeIndex="-1">
+                                    <p:tab title="#{_referenciasVideo.titulo}"  >
+                                        <p:media value="#{_referenciasVideo.ruta}"  player="flash" width="100%" height="400px" />
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </p:tab>
+                            <p:tab title="Imagen" id="imagen">
+                                <p:galleria id="galeria" value="#{repositorioController.referenciasImg}" var="_referenciasImg" panelWidth="500" panelHeight="300" showFilmstrip="true" showCaption="true">
+                                    <p:graphicImage value="#{_referenciasImg.ruta}" title="#{_referenciasImg.titulo}" rendered="#{_referenciasImg.activo}"/>
+                                </p:galleria>
+                            </p:tab>
+                            <p:tab title="Pdf" id="pdf">
+                                <p:accordionPanel style="width: 80%" value="#{repositorioController.referenciasPdf}"  var="_referenciasPdf" activeIndex="-1">
+                                    <p:tab title="#{_referenciasPdf.titulo}" >
+                                        <p:media value="#{_referenciasPdf.ruta}" width="100%" height="400px" />
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </p:tab>
+                            <p:tab id="vacio" rendered="false">
+                            </p:tab>
+                        </p:tabView>
+                        <p:commandButton value="Volver" actionListener="#{repositorioController.visualizarObjetoAprendizaje(_oa)}" update=":oa"/>
+                    </p:panel>
+                    <p:fileUpload fileUploadListener="#{repositorioController.handleFileUpload}" mode="advanced" style="width: 30%"
+                          update="@form" sizeLimit="1000000" allowTypes="/(\.|\/)(pdf|gif|jpe?g|png)$/" />
+                </center>
+            </h:form>
+        </body>
+    </f:view>
+</html>
+
+
+

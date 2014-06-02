@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{appCredentials.idioma}">
+        <h:head>
+
+            <f:loadBundle basename="ApplicationMessages" var="msj" />
+            <p:ajaxStatus onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" >
+            </p:ajaxStatus>
+            <p:dialog modal="true" widgetVar="statusDialog" resizable="false" header=""   
+                      draggable="false" closable="false">  
+                <h:graphicImage library="img"  name="unam.gif"/>
+            </p:dialog>
+        </h:head>
+        <body>
+            <h:form id="oa">
+                <p:outputLabel value="nombre:"/>
+                <br/>
+                <p:inputText value="#{objetoAprendizajeController.objetoAprendizaje.nombre}"/>
+                <br/>
+                <p:outputLabel value="objetivo:"/>
+                <br/>
+                <p:inputText value="#{objetoAprendizajeController.objetoAprendizaje.objetivos}"/>
+                <br/>
+                <br/>
+                <p:selectOneMenu rendered="#{objetoAprendizajeController.materias.size()>0}" value="#{objetoAprendizajeController.materiaSeleccionada}"  filter="true" filterMatchMode="startsWith">
+                    <f:selectItems value="#{objetoAprendizajeController.materias}"
+                                   var="_materias" 
+                                   itemLabel="#{_materias.materia}" 
+                                   itemValue="#{_materias.materia}"/>   
+                    <p:ajax  update=":oa" />
+                </p:selectOneMenu>
+                <br/>
+                <p:commandButton value="Agregar materia" immediate="true" rendered="#{objetoAprendizajeController.materias.size()>0}" actionListener="#{objetoAprendizajeController.addMateria}"  update=":oa"/>
+                <br/>
+                <p:outputLabel value="Materias Seleccionadas"/>
+                <br/>
+                <ui:repeat value="#{objetoAprendizajeController.materiasSeleccionadas}" var="_materia">
+                    <br/>
+                    <p:outputLabel value="#{_materia.materia}"/>
+                </ui:repeat>
+                <br/>
+                <p:commandButton value="Agregar Tema" oncomplete="creaTema.show();" />
+                <br/>
+                <p:commandButton value="guardar" actionListener="#{objetoAprendizajeController.saveObjetoAprendizaje()}" update=":oa"/>
+                <br/>
+                <p:dialog dynamic="true" modal="true"  widgetVar="creaTema" resizable="false" header="Crear nuevo tema" closable="false"    
+                      draggable="true"  >  
+                     <h:form id="creaTema">
+                      <p:outputLabel value="nombre:"/>
+                <br/>
+                <p:inputText   value="#{objetoAprendizajeController.tema.tema}"/>
+                <br/>
+                <p:outputLabel  value="descripcion:"/>
+                <br/>
+                <p:inputText  value="#{objetoAprendizajeController.tema.descripcion}"/>
+                <br/>
+                <p:commandButton process="@form" oncomplete="creaTema.hide();" value="guardar" update=":oa"  />
+                <p:commandButton process="@form" oncomplete="creaTema.hide();" value="salir" update=":oa"  />
+                </h:form>
+            </p:dialog>
+            </h:form>
+        </body>
+    </f:view>
+</html>
+

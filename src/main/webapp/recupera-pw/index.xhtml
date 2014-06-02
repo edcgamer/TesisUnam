@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+        <body>
+            <f:loadBundle basename="ApplicationMessages" var="msj" />
+            <p:ajaxStatus onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" >
+            </p:ajaxStatus>
+            <p:dialog modal="true" widgetVar="statusDialog" resizable="false" header=""   
+                      draggable="false" closable="false">  
+                <h:graphicImage library="img"  name="unam.gif"/>
+            </p:dialog>
+
+            <h:form class="pasword">
+                <center>
+                    <br/><br/><br/>
+                    <div style="width:80%; height: 50px;">
+                        <p:messages id="info" showDetail="true" severity="info" />
+                        <p:messages id="warning" showDetail="true" severity="warn" />
+                        <h:outputText value="#{msgs.recuperar_contrasena}" class="blueBolder" style="font-size: 2.5em"/> 
+                    </div><br/><br/><br/><br/><br/><br/>
+
+                    <br/>
+
+                    <div class="pass">
+                        <label class="nombreUsuario">#{msgs.ingresar_datos}</label><br/><br/>
+
+                        <p:panelGrid  columns="3" style="clear: both;" styleClass="CambiarPass">
+                            <p:column>
+                                <h:outputText value="#{msgs.usuario}"/>                                
+                            </p:column>
+                            <p:column>
+                                <p:inputText  id="usuario"  maxlength="40" required="true" value="#{recuperarController.user}"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="usuario"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{msgs.correo}"/>                                  
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="correo"  maxlength="40" required="true" value="#{recuperarController.correo}"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="correo"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="#{msgs.recuperar_contrasena}" icon="idGuardar" update="@form"  action="#{recuperarController.recuperaContrasena()}" />
+                            </f:facet>
+                        </p:panelGrid><br/>
+                        <p:commandButton value="#{msgs.login_regreso}"  action="index" immediate="true"/>
+                    </div>
+
+                </center>
+            </h:form>
+        </body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:ajaxStatus onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" >
+        </p:ajaxStatus>
+        <p:dialog modal="true" widgetVar="statusDialog" resizable="false" header=""   
+                  draggable="false" closable="false">  
+            <h:graphicImage library="img"  name="unam.gif"/>
+        </p:dialog>
+        <h:form prependId="false">
+            <b><h2><h:outputText rendered="#{param['denegado']}" value="#{msgs.label_autenticacionFallida}" /></h2></b>
+            login:   
+            <p:inputText  id="j_username" value="#{loginController.username}" required="true"   maxlength="25" />
+            <p:message for="j_username"/>
+            pw:
+            <p:password id="j_password" value="#{loginController.password}" required="true"  />
+            <p:message for="j_password"/>
+            <br /><br /><br />
+            <p:commandButton id="login" type="submit" action="#{loginController.login()}" value="login" ajax="false"/>
+            <br />
+            <p:commandLink id="recuperar" action="recuperacion"  immediate="true" style="margin-right:20px;" ajax="false">
+                <h:outputText value="#{msgs.recuperar_contrasena}" /> 
+            </p:commandLink>  
+        </h:form>
+    </h:body>
+</html>
