@@ -435,12 +435,6 @@ a.linkRedes:visited:hover {
     background-image: none;
 }
 
-.icon-anterior { 
-    background-image: url("#{resource['img/iconosBotones:anterior.png']}") !important;   
-}
-.icon-siguiente {  
-    background-image: url("#{resource['img/iconosBotones:siguiente.png']}") !important;   
-}
 
 .ui-column-filter {
     background-color: #ffffff !important;
