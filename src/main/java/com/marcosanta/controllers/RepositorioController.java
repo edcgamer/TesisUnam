@@ -8,18 +8,23 @@ package com.marcosanta.controllers;
 import com.marcosanta.data.model.ObjetoAprendizaje;
 import com.marcosanta.data.model.Referencia;
 import com.marcosanta.service.RepositorioService;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -40,17 +45,29 @@ public class RepositorioController {
     private List<Referencia> referenciasPdf;
     private List<Referencia> referenciasImg;
     private List<Referencia> referenciasVideo;
+    private List<Referencia> referenciasInactivas;
+    private StreamedContent file;
 
     @PostConstruct
     public void init() {
+        file = null;
+        this.referenciasInactivas = new ArrayList<>();
         this.referenciasPdf = new ArrayList<>();
         this.referenciasPdf = new ArrayList<>();
         this.referenciasVideo = new ArrayList<>();
         this.objetosAprendizaje = this.repositorioService.findAll();
     }
 
+    public void actualizaReferencia(Referencia ref) {
+        ref.setActivo(true);
+        this.repositorioService.saveReferencia(ref);
+        this.referenciasInactivas = this.repositorioService.findBybjetoAprendizajeAndActivo(this.objetoAprendizaje, false);
+    }
+
     public void visualizarObjetoAprendizaje(ObjetoAprendizaje obj) {
+
         this.objetoAprendizaje = obj;
+        this.referenciasInactivas = this.repositorioService.findBybjetoAprendizajeAndActivo(this.objetoAprendizaje, false);
         this.referenciasImg = this.repositorioService.findByTipoAndObjetoAprendizaje("imagen", this.objetoAprendizaje);
         this.referenciasPdf = this.repositorioService.findByTipoAndObjetoAprendizaje("pdf", this.objetoAprendizaje);
         this.referenciasVideo = this.repositorioService.findByTipoAndObjetoAprendizaje("video", this.objetoAprendizaje);
@@ -60,35 +77,18 @@ public class RepositorioController {
         if (!event.getFile().getContentType().equals("")) {
             String[] array = event.getFile().getContentType().split("/");
             if (array.length > 1) {
+                System.out.println(array[1]);
                 if (array[1].equals("pdf")) {
-
-                    try {
-                        // write the inputStream to a FileOutputStream
-                        OutputStream outputStream;
-
-                        outputStream = new FileOutputStream(new File("C:\\Users\\Santa\\Picturesed.pdf"));
-
-                        int read = 0;
-                        byte[] bytes = new byte[1024];
-                        System.out.println("-----");
-                        while ((read = event.getFile().getInputstream().read(bytes)) != -1) {
-                            System.out.println("aaaaaaa");
-                            outputStream.write(bytes, 0, read);
-                        }
-                        if (outputStream != null) {
-                            outputStream.close();
-                        }
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(RepositorioController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    this.repositorioService.guardaImagen(event, "/resources/data/pdf", "pdf", this.objetoAprendizaje);
                 } else if (array[1].equals("png")) {
-
+                    this.repositorioService.guardaImagen(event, "/resources/data/imagen", "imagen", this.objetoAprendizaje);
+                } else if (array[1].equals("jpg")) {
+                    this.repositorioService.guardaImagen(event, "/resources/data/imagen", "imagen", this.objetoAprendizaje);
+                } else if (array[1].equals("jpeg")) {
+                    this.repositorioService.guardaImagen(event, "/resources/data/imagen", "imagen", this.objetoAprendizaje);
                 }
             }
         }
-//        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-//        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void verListaObjetosAprendizaje(ObjetoAprendizaje obj) {
@@ -160,6 +160,37 @@ public class RepositorioController {
      */
     public void setReferenciasVideo(List<Referencia> referenciasVideo) {
         this.referenciasVideo = referenciasVideo;
+    }
+
+    /**
+     * @return the referenciasInactivas
+     */
+    public List<Referencia> getReferenciasInactivas() {
+        return referenciasInactivas;
+    }
+
+    /**
+     * @param referenciasInactivas the referenciasInactivas to set
+     */
+    public void setReferenciasInactivas(List<Referencia> referenciasInactivas) {
+        this.referenciasInactivas = referenciasInactivas;
+    }
+
+    /**
+     * @return the file
+     */
+    public StreamedContent getFile() {
+            InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/resources/data/pdf/creditos.pdf");
+            this.setFile(new DefaultStreamedContent(stream, "application/pdf", "caca.pdf"));
+       
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(StreamedContent file) {
+        this.file = file;
     }
 
 }

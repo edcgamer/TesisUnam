@@ -20,4 +20,5 @@ public interface ReferenciaRepository extends PagingAndSortingRepository<Referen
    @Override
    List<Referencia> findAll();
    List<Referencia> findByTipoAndObjetoAprendizaje(String tipo,ObjetoAprendizaje objetoAprendizaje);
+   List<Referencia> findByObjetoAprendizajeAndActivo(ObjetoAprendizaje bjetoAprendizaje,boolean activo);
 }

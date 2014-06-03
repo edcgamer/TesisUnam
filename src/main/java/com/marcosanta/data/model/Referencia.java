@@ -49,6 +49,9 @@ public class Referencia implements Serializable{
     @Size(min = 1, max = 45)
     @Column(name = "TITULO")
     private String titulo;
+
+    public Referencia() {
+    }
     
     @Basic(optional = false)
     @Column(name = "ACTIVO")
@@ -64,6 +67,22 @@ public class Referencia implements Serializable{
      */
     public Integer getId() {
         return id;
+    }
+
+    public Referencia(String tipo, String ruta, String titulo, boolean activo, ObjetoAprendizaje objetoAprendizaje) {
+        this.tipo = tipo;
+        this.ruta = ruta;
+        this.titulo = titulo;
+        this.activo = activo;
+        this.objetoAprendizaje = objetoAprendizaje;
+    }
+
+    public Referencia(Integer id, String tipo, String ruta, String titulo, ObjetoAprendizaje objetoAprendizaje) {
+        this.id = id;
+        this.tipo = tipo;
+        this.ruta = ruta;
+        this.titulo = titulo;
+        this.objetoAprendizaje = objetoAprendizaje;
     }
 
     /**

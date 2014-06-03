@@ -9,6 +9,7 @@ package com.marcosanta.service;
 import com.marcosanta.data.model.ObjetoAprendizaje;
 import com.marcosanta.data.model.Referencia;
 import java.util.List;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -18,4 +19,7 @@ public interface RepositorioService {
     List<ObjetoAprendizaje> findAll();
     List<ObjetoAprendizaje> findByName(String name);
     List<Referencia> findByTipoAndObjetoAprendizaje(String tipo,ObjetoAprendizaje objetoAprendizaje);
+    List<Referencia> findBybjetoAprendizajeAndActivo(ObjetoAprendizaje objetoAprendizaje,boolean activo);
+    void saveReferencia(Referencia referencia);
+    void guardaImagen(FileUploadEvent event, String path, String tipo,ObjetoAprendizaje oa);
 }
