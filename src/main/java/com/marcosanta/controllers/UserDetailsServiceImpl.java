@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService,Serializable {
         List<GrantedAuthority> autoridades = new ArrayList<GrantedAuthority>();
         user = usuarioRepository.findByUsername(username);
         if (user != null) {
-//           autoridades.add(new GrantedAuthorityImpl(null));
+           autoridades.add(new GrantedAuthorityImpl(user.getRol().getNombre()));
             return new SpringUser(username, user.getPassword(), true, true, true, true, autoridades);
         } else {
             throw new UsernameNotFoundException("User  no se encontro");

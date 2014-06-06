@@ -40,6 +40,12 @@
         </navigation-case>
         
         <navigation-case>
+            <from-outcome>cuenta-alumno</from-outcome>
+            <to-view-id>/cuenta-alumno/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+        <navigation-case>
             <from-outcome>home</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
             <redirect/>

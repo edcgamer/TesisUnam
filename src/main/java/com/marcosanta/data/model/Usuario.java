@@ -19,25 +19,34 @@ import javax.validation.constraints.Size;
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "USUARIO")
     private String username;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
     @Column(name = "PASSWORD")
     private String password;
     @Basic(optional = false)
+    
     @Column(name = "ENABLED")
     private boolean enabled;
+    
+    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID")
+    @NotNull
+    @ManyToOne(optional = false)
+    private Rol rol;
 
     public Usuario() {
     }
@@ -110,5 +119,19 @@ public class Usuario implements Serializable {
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * @return the rol
+     */
+    public Rol getRol() {
+        return rol;
+    }
+
+    /**
+     * @param rol the rol to set
+     */
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 }

@@ -30,7 +30,7 @@ and open the template in the editor.
                 <br/>
                 <p:commandButton value="logout" action="#{loginController.logout()}" ajax="false" />
                 <br/>
-                <h:commandLink action="objetoAprendizaje">
+                <h:commandLink action="objetoAprendizaje" rendered="#{appCredentials.asignaPermisos('Crea_objeto')}">
                     <span class="ca-iconI">
                         <h:graphicImage library="img"  class="bordeLinkM" name="iconosHome/oa.png"/>
                     </span>

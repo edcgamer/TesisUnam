@@ -4,8 +4,13 @@
  */
 package com.marcosanta.controllers;
 
+import com.marcosanta.data.model.Modulo;
+import com.marcosanta.data.model.Usuario;
+import com.marcosanta.data.repository.UsuarioRepository;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +20,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +52,12 @@ public class AppCredentials implements Serializable {
     private SpringUser user;
     private Date fechaActual = new Date();
     private String idioma;
+    private Usuario usuarioReal;
+    private List<Modulo> listaModulos;
+    private String cadenaModulos;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public AppCredentials() {
     }
@@ -58,9 +70,16 @@ public class AppCredentials implements Serializable {
      */
     @PostConstruct
     public void init() {
+        
         Authentication aut = SecurityContextHolder.getContext().getAuthentication();
         String usuario = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        user = (SpringUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        this.user = (SpringUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        this.usuarioReal=usuarioRepository.findByUsername(this.user.getUsername());
+        this.listaModulos = new ArrayList<>();
+        if (this.usuarioReal.getRol().getListaModulos() != null) {
+            listaModulos = usuarioReal.getRol().getListaModulos();
+        }
+        cadenaModulos= modulosCad();
         idioma = FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage();
         FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(idioma));
     }
@@ -84,6 +103,7 @@ public class AppCredentials implements Serializable {
                 break;
         }
         return items;
+        
     }
 
     public void cambiaLocal(ValueChangeEvent event) {
@@ -105,7 +125,19 @@ public class AppCredentials implements Serializable {
         idioma = "en";
     }
 
-
+    public boolean asignaPermisos(String modulo) {
+        return cadenaModulos.contains(modulo);
+//        return true;
+    }
+    
+    public String modulosCad(){
+        StringBuilder sb= new StringBuilder();
+        for(Modulo mod:listaModulos){
+            sb.append(mod.getNombre());
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
 
     /**
      * Valida que el usuario con la secion activa tenga acceso a aeste módulo
@@ -145,5 +177,13 @@ public class AppCredentials implements Serializable {
     public void setIdioma(String idioma) {
         this.idioma = idioma;
     }
+
+    /**
+     * @return the usuarioReal
+     */
+    public Usuario getUsuarioReal() {
+        return usuarioReal;
+    }
+
 
 }

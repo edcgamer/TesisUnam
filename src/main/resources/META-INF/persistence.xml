@@ -13,6 +13,8 @@
     <class>com.marcosanta.data.model.Objetivo</class>
     <class>com.marcosanta.data.model.Referencia</class>
     <class>com.marcosanta.data.model.TipoObjetoAprendizaje</class>
+    <class>com.marcosanta.data.model.Rol</class>
+    <class>com.marcosanta.data.model.Modulo</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.jdbc.batch_size" value="0"/>
