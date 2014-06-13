@@ -82,4 +82,5 @@
     <bean id="usuarioService" class="com.marcosanta.service.impl.UsuarioServiceImpl" />
     <bean id="objetoAprendizajeService" class="com.marcosanta.service.impl.ObjetoAprendizajeServiceImpl" />
     <bean id="repositorioService" class="com.marcosanta.service.impl.RepositorioServiceImpl" />
+    <bean id="cuentaUsuario" class="com.marcosanta.service.impl.CuentaUsuarioServiceImpl" />
 </beans>

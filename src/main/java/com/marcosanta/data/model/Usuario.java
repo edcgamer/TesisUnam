@@ -5,7 +5,6 @@
 package com.marcosanta.data.model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,7 +37,18 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 64)
     @Column(name = "PASSWORD")
     private String password;
+    
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 64)
+    @Column(name = "CORREO")
+    private String correo;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 64)
+    @Column(name = "NOMBRE")
+    private String nombre;
     
     @Column(name = "ENABLED")
     private boolean enabled;
@@ -133,5 +143,33 @@ public class Usuario implements Serializable {
      */
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    /**
+     * @return the correo
+     */
+    public String getCorreo() {
+        return correo;
+    }
+
+    /**
+     * @param correo the correo to set
+     */
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    /**
+     * @return the nombre
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

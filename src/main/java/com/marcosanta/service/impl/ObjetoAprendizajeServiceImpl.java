@@ -10,7 +10,6 @@ import com.marcosanta.data.model.ObjetoAprendizaje;
 import com.marcosanta.data.model.Tema;
 import com.marcosanta.data.repository.ObjetoAprendizajeRepository;
 import com.marcosanta.data.repository.TemaRepository;
-import com.marcosanta.data.repository.UsuarioRepository;
 import com.marcosanta.service.ObjetoAprendizajeService;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
